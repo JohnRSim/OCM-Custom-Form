@@ -8,7 +8,7 @@ const config = {
 	},
 	plugins: [imagetools(), sveltekit()],
 	server: {
-		port: 5173,
+		port: 3000,
 		strictPort: false,
 	},
 	preview: {

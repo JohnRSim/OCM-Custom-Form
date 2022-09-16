@@ -16,6 +16,9 @@ const config = {
 	],
 	kit: {
 		adapter: adapter({ precompress: true }),
+		paths: {
+			base: '/_themes/_components/BB-Custom-Form/publish/assets/client',
+		},
 	},
 };
 
