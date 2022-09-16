@@ -20,7 +20,7 @@
 	let availableLanguages;
 	
 	//Content type Asset Configuration
-	$: contentTypeStructure = {};
+	let contentTypeStructure = {};
 
 
 	onMount(async () => {
@@ -34,7 +34,7 @@
 	/**
 	 * initFormNew
 	 **/
-	async function initFormNew(sdk) {
+	function initFormNew(sdk) {
 		console.log('[initFormNew sdk]',sdk);
 		//sometimes double call is triggered using this hack
 		if (isMounted) {
@@ -66,6 +66,9 @@
 		// fields of the item
 		fields = item.getFields();
 		console.log('[fields]', fields);
+
+		// Generate loopable structure
+		updateContentTypeStore(itemProps, groups, fields);
 
 		// current locale of the UI
 		locale = formSDK.getLocale();
@@ -253,8 +256,9 @@
 								/>
 							</label>
 							<!-- xSlug -->
-
+							
 							<!-- Language -->
+							{#if (isNew)}
 							<label class="block">
 								<span class="text-gray-700">Language</span>
 								<select
@@ -273,12 +277,13 @@
 								{/each}
 								</select>
 							</label>
+							{/if}
 							<!-- xLanguage -->
 						</div>
 					</div>
 				</fieldset>
 				<!-- xPrimary Fields-->
-				
+
 				<div class="hr"><hr /></div>
 
 				<!-- Loop through Groups -->
