@@ -1,20 +1,13 @@
 <script>
-	import '$lib/styles/normalise.css';
-	import '$lib/styles/index.scss';
+    import "../app.css";
 </script>
 
-<div class="container">
-	<slot />
+<div class="flex flex-1">
+	<main class="columns-1 p-4 flex flex-1">
+		<slot />
+	</main>
 </div>
 
 <style lang="scss">
-	.container {
-		display: flex;
-		flex-wrap: wrap;
-		flex-direction: column;
-		justify-content: space-between;
-		padding: $spacing-4 $spacing-0 $spacing-0;
-		margin: $spacing-0 auto;
-		min-height: 100vh;
-	}
+	
 </style>

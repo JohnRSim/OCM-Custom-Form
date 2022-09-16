@@ -8,6 +8,7 @@ const config = {
 	preprocess: [
 		mdsvex({ extensions: ['.svelte.md', '.md', '.svx'] }),
 		preprocess({
+			postcss: true,
 			scss: {
 				prependData: "@import 'src/lib/styles/variables.scss';",
 			},
