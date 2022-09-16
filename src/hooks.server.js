@@ -8,7 +8,7 @@ import { env as public_env } from '$env/dynamic/public';
 const directives = {
 	'base-uri': ["'self'"],
 	'child-src': ["'self'"],
-	'connect-src': ["'self'", 'ws://localhost:*'],
+	'connect-src': ["'self'", 'ws://localhost:*','ws://localhost:8085'],
 	// 'connect-src': ["'self'", 'ws://localhost:*', 'https://hcaptcha.com', 'https://*.hcaptcha.com'],
 	'img-src': ["'self'", 'data:'],
 	'font-src': ["'self'", 'data:'],
@@ -31,6 +31,7 @@ const directives = {
 		"'self'",
 		public_env.PUBLIC_DOMAIN,
 		`ws://${public_env.PUBLIC_DOMAIN}`,
+		'ws://localhost:8085',
 		// 'https://*.google.com',
 		// 'https://*.googleapis.com',
 		// 'https://*.firebase.com',
