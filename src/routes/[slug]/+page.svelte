@@ -2,6 +2,17 @@
 	//svelte
 	import { onDestroy, onMount } from 'svelte';
 	import { xlink_attr } from 'svelte/internal';
+
+	//Components
+	import Group from '$lib/components/Group.svelte';
+	import Text from '$lib/components/Text.svelte';
+	import LargeText from '$lib/components/LargeText.svelte';
+	import Divider from '$lib/components/Divider.svelte';
+	import EmbeddedContent from '$lib/components/EmbeddedContent.svelte';
+	import Media from '$lib/components/Media.svelte';
+	import Reference from '$lib/components/Reference.svelte';
+	import Boolean from '$lib/components/Boolean.svelte';
+	import Date from '$lib/components/Date.svelte';
 	
 	//Global Form Configuration
 	let isMounted = false;
@@ -194,404 +205,126 @@
 			<!-- Generate Content Fields -->
 			{#if (contentTypeStructure.groups)}
 				<!-- Primary Fields-->
-				<dl>
-					<dt></dt>
-					<dd class="mt-8">
+				<Group>
+					<dt slot="title"></dt>
+					<dd slot="content" class="mt-8">
 						<div class="grid grid-cols-1 gap-6">
 							<!-- Asset Name -->
-							<label class="block">
-								<span class="text-gray-700 font-medium">Asset Name *</span>
-								<input
-									type="text"
-									class="
-									mt-1
-									block
-									w-full
-									rounded-md
-									border-gray-300
-									shadow-sm
-									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-								"
-									placeholder="Content item name"
-								/>
-							</label>
+							<Text
+								required="{true}"
+								label="Asset Name"
+								placeholder="Content item name" />
 							<!-- xAsset Name -->
 
 							<!-- Description -->
-							<label class="block">
-								<span class="text-gray-700 font-medium">Description</span>
-								<textarea
-									class="
-									mt-1
-									block
-									w-full
-									rounded-md
-									border-gray-300
-									shadow-sm
-									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-								"
-									rows="3"
-									placeholder="Content item description"
-								/>
-							</label>
+							<LargeText 
+								required="{false}"
+								label="Asset Name"
+								placeholder="Content item name" />
 							<!-- xDescription -->
 
 							<!-- Slug -->
-							<label class="block">
-								<span class="text-gray-700 font-medium">Slug *</span>
-								<input
-									type="text"
-									class="
-									mt-1
-									block
-									w-full
-									rounded-md
-									border-gray-300
-									shadow-sm
-									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-								"
-									placeholder="Unique Content Item Identifier"
-								/>
-							</label>
+							<Text
+								required="{true}"
+								label="Slug"
+								placeholder="Unique Content Item Identifier" />
 							<!-- xSlug -->
 							
 							<!-- Language -->
 							{#if (isNew)}
-							<label class="block">
-								<span class="text-gray-700 font-medium">Language *</span>
-								<select
-									class="
-									block
-									w-full
-									mt-1
-									rounded-md
-									border-gray-300
-									shadow-sm
-									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-								"
-								>
-								{#each availableLanguages as language}
-									<option value="{language.value}">{language.label}</option>
-								{/each}
-								</select>
-							</label>
+								<Text
+									type="Single-select menu"
+									required="{true}"
+									label="Language"
+									items="{availableLanguages}" />
 							{/if}
 							<!-- xLanguage -->
 						</div>
 					</dd>
-				</dl>
+				</Group>
 				<!-- xPrimary Fields-->
-				<hr class="border-2 border-slate-500 cursor-pointer rounded-xl mt-6 mb-6" />
+
+				<Divider />
+
 				<!-- Loop through Groups -->
 				{#each contentTypeStructure.groups as group}
 					<!-- Loop fields associated with group -->
 					{#if ((group.fields) && (group.fields.length > 0))}
-						<dl class="shadow-md rounded-xl mt-4 mb-10 bg-white ring-1 ring-slate-700/10">
-							<dt class="p-4 font-semibold border-b border-grey">{group.title}</dt>
-											
-							<dd class="p-4">
+						<Group isCard={true}>
+							<dt slot="title" class="p-4 font-semibold border-b border-grey">{group.title}</dt>
+							<dd slot="content" class="p-4">
 								<div class="grid grid-cols-1 gap-6">
 									{#each group.fields as field}
 										<!-- Text Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'text')}
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<input
-													type="text"
-													class="
-													mt-1
-													block
-													w-full
-													rounded-md
-													border-gray-300
-													shadow-sm
-													focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-												"
-													placeholder="{contentTypeStructure.fields[field].settings.caas.description}"
-												/>
-											</label>
+											<Text
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
 										<!-- xText Field -->
 
 										<!-- LargeText Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'largetext')}
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<textarea
-													class="
-													mt-1
-													block
-													w-full
-													rounded-md
-													border-gray-300
-													shadow-sm
-													focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-												"
-													placeholder="{contentTypeStructure.fields[field].settings.caas.description}"
-													rows="3"
-												/>
-											</label>
+											<LargeText 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
 										<!-- xLargeText Field -->
 										
 										<!-- JSON Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'json')}
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<textarea
-													class="
-													mt-1
-													block
-													w-full
-													rounded-md
-													border-gray-300
-													shadow-sm
-													focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-												"
-													rows="3"
-												/>
-											</label>
+											<EmbeddedContent 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}" />
 										{/if}
 										<!-- xJSON Field -->
 										
 										<!-- Reference Content Type -->
 										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'ContentType'))}
-											
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<p class="text-sm">{contentTypeStructure.fields[field].settings.caas.description}</p>
-												<div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-2">
-													<div class="flex-1 flex items-center ">
-														<span class="ring-1 ring-slate-700/10 rounded-md p-1 text-xs">Collection</span> 
-														<span class="pl-3"><input value="Spacedust" /></span>
-													</div>
-													<div class="pr-2 flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Create</button>
-													</div>
-													<div class="pr-2 flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Select</button>
-													</div>
-													<div class="flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Clear</button>
-													</div>
-												</div>
-											</label>	
-									
+											<Reference 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												description="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
 										<!-- xReference Content Type -->
 										
 										<!-- Reference Media Type -->
 										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'DigitalAssetType'))}
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<p class="text-sm">{contentTypeStructure.fields[field].settings.caas.description}</p>
-												<div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-2">
-													<div class="flex-1 flex items-center ">
-														<span class="ring-1 ring-slate-700/10 rounded-md p-1 text-xs">NFT-3D</span> 
-														<span class="pl-3"><input value="Player Card 1" /></span>
-													</div>
-													<div class="pr-2 flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Create</button>
-													</div>
-													<div class="pr-2 flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Select</button>
-													</div>
-													<div class="flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Clear</button>
-													</div>
-												</div>
-												<div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-4">
-													<div class="pr-2 flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Add</button>
-													</div>
-													<div class="pr-2 flex items-center">
-														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Select Many</button>
-													</div>
-												</div>
-											</label>
+											<Media 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												description="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
 										<!-- xReference Media Type -->
 
 										<!-- Toggle -->
 										{#if (contentTypeStructure.fields[field].datatype === 'boolean')}
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<div class="pointer-events-auto h-6 w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out bg-slate-900/10 ring-slate-900/5"><div class="h-4 w-4 rounded-full bg-white shadow-sm ring-1 ring-slate-700/10 transition duration-200 ease-in-out"></div></div>
-											</label>
+											<Boolean 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												description="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
 										<!-- Toggle -->
 
 										<!-- datetime -->
 										{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
-											
-											<label class="block">
-												<span class="text-gray-700 font-medium">
-													{contentTypeStructure.fields[field].description}
-													{#if (contentTypeStructure.fields[field].required)}
-														*
-													{/if}
-												</span>
-												<input
-													type="date"
-													class="
-													mt-1
-													block
-													w-full
-													rounded-md
-													border-gray-300
-													shadow-sm
-													focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-												"
-												/>
-											</label>
+											<Date 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												description="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
 										<!-- datetime -->
 									{/each}
 								</div>
 							</dd>
-						</dl>
+						</Group>
 					{/if}
 					<!-- xLoop fields associated with group -->
 				{/each}
 				<!-- xLoop through Groups -->
 			{/if}
-	
-	<!--
-					<label class="block">
-						<span class="text-gray-700">Full name</span>
-						<input
-							type="text"
-							class="
-							mt-1
-							block
-							w-full
-							rounded-md
-							border-gray-300
-							shadow-sm
-							focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-						"
-							placeholder=""
-						/>
-					</label>
-					<label class="block">
-						<span class="text-gray-700">Email address</span>
-						<input
-							type="email"
-							class="
-							mt-1
-							block
-							w-full
-							rounded-md
-							border-gray-300
-							shadow-sm
-							focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-						"
-							placeholder="john@example.com"
-						/>
-					</label>
-					<label class="block">
-						<span class="text-gray-700">When is your event?</span>
-						<input
-							type="date"
-							class="
-							mt-1
-							block
-							w-full
-							rounded-md
-							border-gray-300
-							shadow-sm
-							focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-						"
-						/>
-					</label>
-					<label class="block">
-						<span class="text-gray-700">What type of event is it?</span>
-						<select
-							class="
-							block
-							w-full
-							mt-1
-							rounded-md
-							border-gray-300
-							shadow-sm
-							focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-						"
-						>
-							<option>Corporate event</option>
-							<option>Wedding</option>
-							<option>Birthday</option>
-							<option>Other</option>
-						</select>
-					</label>
-					<label class="block">
-						<span class="text-gray-700">Additional details</span>
-						<textarea
-							class="
-							mt-1
-							block
-							w-full
-							rounded-md
-							border-gray-300
-							shadow-sm
-							focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-						"
-							rows="3"
-						/>
-					</label>
-					<div class="block">
-						<div class="mt-2">
-							<div>
-								<label class="inline-flex items-center">
-									<input
-										type="checkbox"
-										class="
-								rounded
-								border-gray-300
-								text-indigo-600
-								shadow-sm
-								focus:border-indigo-300
-								focus:ring
-								focus:ring-offset-0
-								focus:ring-indigo-200
-								focus:ring-opacity-50
-								"
-										checked
-									/>
-									<span class="ml-2">Email me news and special offers</span>
-								</label>
-							</div>
-						</div>
-			</div>-->
 		</form>	
 	</article>
 	<!-- xForm Panel -->
