@@ -1,12 +1,8 @@
 <script>
-	export let label = '';
-	export let required = false;
 	export let placeholder = '';
 </script>
 
 
-<label class="block">
-	<span class="text-gray-700 font-medium">{label} {#if (required)}*{/if}</span>
 	<textarea
 		class="
 		mt-1
@@ -20,7 +16,6 @@
 		rows="3"
 		placeholder="{placeholder}"
 	/>
-</label>
 
 <style lang="scss">
 	

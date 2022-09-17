@@ -13,6 +13,7 @@
 	import Reference from '$lib/components/Reference.svelte';
 	import Boolean from '$lib/components/Boolean.svelte';
 	import Date from '$lib/components/Date.svelte';
+	import Label from '$lib/components/Label.svelte';
 	
 	//Global Form Configuration
 	let isMounted = false;
@@ -210,24 +211,27 @@
 					<dd slot="content" class="mt-8">
 						<div class="grid grid-cols-1 gap-6">
 							<!-- Asset Name -->
-							<Text
+							<Label
 								required="{true}"
-								label="Asset Name"
-								placeholder="Content item name" />
+								label="Asset Name">
+								<Text placeholder="Content item name" />
+							</Label>
 							<!-- xAsset Name -->
 
 							<!-- Description -->
-							<LargeText 
+							<Label
 								required="{false}"
-								label="Asset Name"
-								placeholder="Content item name" />
+								label="Description">
+								<LargeText placeholder="Content item name" />
+							</Label>
 							<!-- xDescription -->
 
 							<!-- Slug -->
-							<Text
+							<Label
 								required="{true}"
-								label="Slug"
-								placeholder="Unique Content Item Identifier" />
+								label="Slug">
+								<Text placeholder="Unique Content Item Identifier" />
+							</Label>
 							<!-- xSlug -->
 							
 							<!-- Language -->
@@ -244,9 +248,11 @@
 				</Group>
 				<!-- xPrimary Fields-->
 
+				<!-- Divider-->
 				<Divider />
+				<!-- xDivider-->
 
-				<!-- Loop through Groups -->
+				<!-- Loop through Groups and asset configured fields -->
 				{#each contentTypeStructure.groups as group}
 					<!-- Loop fields associated with group -->
 					{#if ((group.fields) && (group.fields.length > 0))}
@@ -257,46 +263,51 @@
 									{#each group.fields as field}
 										<!-- Text Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'text')}
-											<Text
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<Text placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
 										{/if}
 										<!-- xText Field -->
 
 										<!-- LargeText Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'largetext')}
-											<LargeText 
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<LargeText placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
 										{/if}
 										<!-- xLargeText Field -->
 										
 										<!-- Reference Media Type -->
 										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'DigitalAssetType'))}
-											<Media 
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<Media description="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
 										{/if}
 										<!-- xReference Media Type -->
 
 										<!-- Reference Content Type -->
 										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'ContentType'))}
-											<Reference 
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<Reference description="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
 										{/if}
 										<!-- xReference Content Type -->
 
 										<!-- Datetime -->
 											{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
-											<Date 
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<Date description="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
 										{/if}
 										<!-- xDatetime -->
 
@@ -308,18 +319,21 @@
 										
 										<!-- Boolean -->
 										{#if (contentTypeStructure.fields[field].datatype === 'boolean')}
-											<Boolean 
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<Boolean description="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
 										{/if}
 										<!-- Boolean -->
 										
 										<!-- EmbeddedContent -->
 										{#if (contentTypeStructure.fields[field].datatype === 'json')}
-											<EmbeddedContent 
+											<Label
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}" />
+												label="{contentTypeStructure.fields[field].description}">
+												<EmbeddedContent  />
+											</Label>
 										{/if}
 										<!-- xEmbeddedContent -->
 
