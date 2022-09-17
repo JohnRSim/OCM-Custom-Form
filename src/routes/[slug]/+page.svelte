@@ -190,6 +190,7 @@
 	<!-- Form Panel -->
 	<article class="flex flex-1 min-w-[448px] items-center flex justify-center">
 		<form class="flex-1 max-w-[448px]" on:submit|preventDefault={handleSubmit}>
+			<h1 class="font-semibold text-lg mt-4">Content Item Properties</h1>
 			<!-- Generate Content Fields -->
 			{#if (contentTypeStructure.groups)}
 				<!-- Primary Fields-->
@@ -199,7 +200,7 @@
 						<div class="grid grid-cols-1 gap-6">
 							<!-- Asset Name -->
 							<label class="block">
-								<span class="text-gray-700">Asset Name</span>
+								<span class="text-gray-700 font-medium">Asset Name *</span>
 								<input
 									type="text"
 									class="
@@ -211,14 +212,14 @@
 									shadow-sm
 									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
 								"
-									placeholder=""
+									placeholder="Content item name"
 								/>
 							</label>
 							<!-- xAsset Name -->
 
 							<!-- Description -->
 							<label class="block">
-								<span class="text-gray-700">Description</span>
+								<span class="text-gray-700 font-medium">Description</span>
 								<textarea
 									class="
 									mt-1
@@ -230,13 +231,14 @@
 									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
 								"
 									rows="3"
+									placeholder="Content item description"
 								/>
 							</label>
 							<!-- xDescription -->
 
 							<!-- Slug -->
 							<label class="block">
-								<span class="text-gray-700">Slug</span>
+								<span class="text-gray-700 font-medium">Slug *</span>
 								<input
 									type="text"
 									class="
@@ -248,7 +250,7 @@
 									shadow-sm
 									focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
 								"
-									placeholder=""
+									placeholder="Unique Content Item Identifier"
 								/>
 							</label>
 							<!-- xSlug -->
@@ -256,7 +258,7 @@
 							<!-- Language -->
 							{#if (isNew)}
 							<label class="block">
-								<span class="text-gray-700">Language</span>
+								<span class="text-gray-700 font-medium">Language *</span>
 								<select
 									class="
 									block
@@ -269,7 +271,7 @@
 								"
 								>
 								{#each availableLanguages as language}
-									<option>{language}</option>
+									<option value="{language.value}">{language.label}</option>
 								{/each}
 								</select>
 							</label>
@@ -279,21 +281,26 @@
 					</dd>
 				</dl>
 				<!-- xPrimary Fields-->
-				<hr class="border-4 border-slate-500 cursor-pointer hover:border-red-500 duration-500 rounded-xl mt-5 mb-5" />
+				<hr class="border-2 border-slate-500 cursor-pointer rounded-xl mt-6 mb-6" />
 				<!-- Loop through Groups -->
 				{#each contentTypeStructure.groups as group}
 					<!-- Loop fields associated with group -->
-					{#if (group.fields)}
-						<dl class="shadow-md rounded-xl p-4 mt-4 mb-4 bg-white">
-							<dt class="p-4">Group</dt>
+					{#if ((group.fields) && (group.fields.length > 0))}
+						<dl class="shadow-md rounded-xl mt-4 mb-10 bg-white">
+							<dt class="p-4 font-semibold border-b border-grey">{group.title}</dt>
 											
-							<dd class="mt-8">
+							<dd class="p-4">
 								<div class="grid grid-cols-1 gap-6">
 									{#each group.fields as field}
 										<!-- Text Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'text')}
 											<label class="block">
-												<span class="text-gray-700">Text</span>
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
 												<input
 													type="text"
 													class="
@@ -305,7 +312,7 @@
 													shadow-sm
 													focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
 												"
-													placeholder=""
+													placeholder="{contentTypeStructure.fields[field].settings.caas.description}"
 												/>
 											</label>
 										{/if}
@@ -314,7 +321,12 @@
 										<!-- LargeText Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'largetext')}
 											<label class="block">
-												<span class="text-gray-700">Large Text</span>
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
 												<textarea
 													class="
 													mt-1
@@ -325,6 +337,7 @@
 													shadow-sm
 													focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
 												"
+													placeholder="{contentTypeStructure.fields[field].settings.caas.description}"
 													rows="3"
 												/>
 											</label>
@@ -334,7 +347,12 @@
 										<!-- JSON Field -->
 										{#if (contentTypeStructure.fields[field].datatype === 'json')}
 											<label class="block">
-												<span class="text-gray-700">JSON</span>
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
 												<textarea
 													class="
 													mt-1
@@ -353,19 +371,27 @@
 										
 										<!-- Reference Content Type -->
 										{#if (contentTypeStructure.fields[field].datatype === 'reference')}
-											<div>Content Reference</div>
+											<div>{contentTypeStructure.fields[field].description}</div>
 										{/if}
 										<!-- xReference Content Type -->
 										
 										<!-- Reference Media Type -->
 										{#if (contentTypeStructure.fields[field].datatype === 'reference')}
-											<div>Media Reference</div>
+											<div>{contentTypeStructure.fields[field].description}</div>
 										{/if}
 										<!-- xReference Media Type -->
 
 										<!-- Toggle -->
 										{#if (contentTypeStructure.fields[field].datatype === 'boolean')}
-											<div class="pointer-events-auto h-6 w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out bg-slate-900/10 ring-slate-900/5"><div class="h-4 w-4 rounded-full bg-white shadow-sm ring-1 ring-slate-700/10 transition duration-200 ease-in-out"></div></div>
+											<label class="block">
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
+												<div class="pointer-events-auto h-6 w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out bg-slate-900/10 ring-slate-900/5"><div class="h-4 w-4 rounded-full bg-white shadow-sm ring-1 ring-slate-700/10 transition duration-200 ease-in-out"></div></div>
+											</label>
 										{/if}
 										<!-- Toggle -->
 
@@ -373,7 +399,12 @@
 										{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
 											
 											<label class="block">
-												<span class="text-gray-700">Date</span>
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
 												<input
 													type="date"
 													class="
@@ -505,7 +536,6 @@
 							</div>
 						</div>
 			</div>-->
-			<button class="bg-sky-500 text-white text-base font-medium rounded-lg p-3">Save Asset</button>
 		</form>	
 	</article>
 	<!-- xForm Panel -->

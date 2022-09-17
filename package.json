@@ -4,7 +4,10 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"export": "npm run build && npm run copy && npm run publish",
+		"copy": "robocopy \"C:\\work\\bitmapbytes\\git\\OCM-Custom-Form\\build\" \"C:\\work\\sa\\cec-src\\src\\components\\BB-Custom-Form\\assets\" /MIR & exit 0",
+		"publish": "cd C:\\work\\sa\\cec-src && cec upload-component BB-Custom-Form -p -s FBOCEGEN2"
 	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^17.1.0",
