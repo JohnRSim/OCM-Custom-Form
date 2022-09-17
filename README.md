@@ -26,6 +26,9 @@ I'll also pull in the additional OCM Plugins for the CKEditor
 The user interface is generated with tailwind and enables the ability to quickly skin and adjust the look and the feel of the form 
 https://tailwindcss.com
 
+![befre_after_stacked](https://user-images.githubusercontent.com/364208/190849719-9a9162cd-5722-475a-934f-886355f7b0e1.png)
+
+
 # Additional Features
 
 I will be adding multilingual label support - you will need to manage and update the translations yourself. 
