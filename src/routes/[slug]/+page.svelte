@@ -273,23 +273,6 @@
 										{/if}
 										<!-- xLargeText Field -->
 										
-										<!-- JSON Field -->
-										{#if (contentTypeStructure.fields[field].datatype === 'json')}
-											<EmbeddedContent 
-												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}" />
-										{/if}
-										<!-- xJSON Field -->
-										
-										<!-- Reference Content Type -->
-										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'ContentType'))}
-											<Reference 
-												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												description="{contentTypeStructure.fields[field].settings.caas.description}" />
-										{/if}
-										<!-- xReference Content Type -->
-										
 										<!-- Reference Media Type -->
 										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'DigitalAssetType'))}
 											<Media 
@@ -299,23 +282,47 @@
 										{/if}
 										<!-- xReference Media Type -->
 
-										<!-- Toggle -->
+										<!-- Reference Content Type -->
+										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'ContentType'))}
+											<Reference 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+										{/if}
+										<!-- xReference Content Type -->
+
+										<!-- Datetime -->
+											{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
+											<Date 
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}"
+												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+										{/if}
+										<!-- xDatetime -->
+
+										<!-- Number -->
+										<!-- xNumber -->
+
+										<!-- Decimal -->
+										<!-- xDecimal -->
+										
+										<!-- Boolean -->
 										{#if (contentTypeStructure.fields[field].datatype === 'boolean')}
 											<Boolean 
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}"
 												description="{contentTypeStructure.fields[field].settings.caas.description}" />
 										{/if}
-										<!-- Toggle -->
-
-										<!-- datetime -->
-										{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
-											<Date 
+										<!-- Boolean -->
+										
+										<!-- EmbeddedContent -->
+										{#if (contentTypeStructure.fields[field].datatype === 'json')}
+											<EmbeddedContent 
 												required="{contentTypeStructure.fields[field].required}"
-												label="{contentTypeStructure.fields[field].description}"
-												description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												label="{contentTypeStructure.fields[field].description}" />
 										{/if}
-										<!-- datetime -->
+										<!-- xEmbeddedContent -->
+
 									{/each}
 								</div>
 							</dd>
