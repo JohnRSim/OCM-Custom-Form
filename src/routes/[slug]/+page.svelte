@@ -188,8 +188,8 @@
 	 xInfo Panel -->
 
 	<!-- Form Panel -->
-	<article class="flex flex-1 min-w-[448px] items-center flex justify-center">
-		<form class="flex-1 max-w-[448px]" on:submit|preventDefault={handleSubmit}>
+	<article class="flex flex-1 min-w-[640px] items-center flex justify-center">
+		<form class="flex-1 max-w-[640px]" on:submit|preventDefault={handleSubmit}>
 			<h1 class="font-semibold text-lg mt-4">Content Item Properties</h1>
 			<!-- Generate Content Fields -->
 			{#if (contentTypeStructure.groups)}
@@ -286,7 +286,7 @@
 				{#each contentTypeStructure.groups as group}
 					<!-- Loop fields associated with group -->
 					{#if ((group.fields) && (group.fields.length > 0))}
-						<dl class="shadow-md rounded-xl mt-4 mb-10 bg-white">
+						<dl class="shadow-md rounded-xl mt-4 mb-10 bg-white ring-1 ring-slate-700/10">
 							<dt class="p-4 font-semibold border-b border-grey">{group.title}</dt>
 											
 							<dd class="p-4">
@@ -370,14 +370,70 @@
 										<!-- xJSON Field -->
 										
 										<!-- Reference Content Type -->
-										{#if (contentTypeStructure.fields[field].datatype === 'reference')}
-											<div>{contentTypeStructure.fields[field].description}</div>
+										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'ContentType'))}
+											
+											<label class="block">
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
+												<p class="text-sm">{contentTypeStructure.fields[field].settings.caas.description}</p>
+												<div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-2">
+													<div class="flex-1 flex items-center ">
+														<span class="ring-1 ring-slate-700/10 rounded-md p-1 text-xs">Collection</span> 
+														<span class="pl-3"><input value="Spacedust" /></span>
+													</div>
+													<div class="pr-2 flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Create</button>
+													</div>
+													<div class="pr-2 flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Select</button>
+													</div>
+													<div class="flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Clear</button>
+													</div>
+												</div>
+											</label>	
+									
 										{/if}
 										<!-- xReference Content Type -->
 										
 										<!-- Reference Media Type -->
-										{#if (contentTypeStructure.fields[field].datatype === 'reference')}
-											<div>{contentTypeStructure.fields[field].description}</div>
+										{#if ((contentTypeStructure.fields[field].datatype === 'reference') && (contentTypeStructure.fields[field].referenceType.typeCategory === 'DigitalAssetType'))}
+											<label class="block">
+												<span class="text-gray-700 font-medium">
+													{contentTypeStructure.fields[field].description}
+													{#if (contentTypeStructure.fields[field].required)}
+														*
+													{/if}
+												</span>
+												<p class="text-sm">{contentTypeStructure.fields[field].settings.caas.description}</p>
+												<div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-2">
+													<div class="flex-1 flex items-center ">
+														<span class="ring-1 ring-slate-700/10 rounded-md p-1 text-xs">NFT-3D</span> 
+														<span class="pl-3"><input value="Player Card 1" /></span>
+													</div>
+													<div class="pr-2 flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Create</button>
+													</div>
+													<div class="pr-2 flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Select</button>
+													</div>
+													<div class="flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Clear</button>
+													</div>
+												</div>
+												<div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-4">
+													<div class="pr-2 flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Add</button>
+													</div>
+													<div class="pr-2 flex items-center">
+														<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Select Many</button>
+													</div>
+												</div>
+											</label>
 										{/if}
 										<!-- xReference Media Type -->
 
