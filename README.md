@@ -1,9 +1,4 @@
-<img width="681" alt="DefaultContentForm" src="https://user-images.githubusercontent.com/364208/190724683-065d3769-b914-4821-b469-c7cec38ea3de.PNG"> 
-
-## Transforming the OOTB UI Above to tailwindCSS Below
-
-![image](https://user-images.githubusercontent.com/364208/190755093-4af5d190-1d19-4e15-a78c-fc56762fbe61.png)
-
+![customcontentformv2](https://user-images.githubusercontent.com/364208/190846671-32ebd8a8-6943-4074-bb14-a963ef40f5bb.png)
 
 # OCM-Custom-Form (Starter kit)(IN DEVELOPMENT..)
 Enabling an enhanced editor experience in OCM and providing developers a quick base OCM Custom Form component that they can quickly customise and enhance to provide additional integrated features for OCM Editors.
