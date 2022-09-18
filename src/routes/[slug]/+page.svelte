@@ -212,7 +212,7 @@
 	 xInfo Panel -->
 
 	<!-- Form Panel -->
-	<article class="flex flex-1 min-w-[640px] items-center flex justify-center">
+	<article class="flex flex-1 min-w-[640px] flex justify-center">
 		<form class="flex-1 max-w-[640px]" on:submit|preventDefault={handleSubmit}>
 			<h1 class="font-semibold text-lg mt-4">Content Item Properties</h1>
 			<!-- Generate Content Fields -->
