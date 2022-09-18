@@ -1,4 +1,5 @@
 <script>
+	export let fieldName = 'unknown';
 	export let placeholder = 'Enter number';
 	
 	let decimalValue;

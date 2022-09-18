@@ -1,4 +1,5 @@
 <script>
+	export let fieldName = 'unknown';
 	export let description = '';
 </script>
 

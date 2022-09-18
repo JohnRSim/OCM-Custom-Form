@@ -1,7 +1,5 @@
 <script>
-	import { loop_guard } from "svelte/internal";
-
-
+	export let fieldName = 'unknown';
 	export let type = 'Single text box';
 	export let placeholder = 'Enter Text';
 	export let items = [];

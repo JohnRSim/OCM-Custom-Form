@@ -215,7 +215,9 @@
 							<Label
 								required="{true}"
 								label="Asset Name">
-								<Text placeholder="Content item name" />
+								<Text 
+									fieldName="name"
+									placeholder="Content item name" />
 							</Label>
 							<!-- xAsset Name -->
 
@@ -223,7 +225,9 @@
 							<Label
 								required="{false}"
 								label="Description">
-								<LargeText placeholder="Content item name" />
+								<LargeText 
+									fieldName="description"
+									placeholder="Content item name" />
 							</Label>
 							<!-- xDescription -->
 
@@ -231,13 +235,16 @@
 							<Label
 								required="{true}"
 								label="Slug">
-								<Text placeholder="Unique Content Item Identifier" />
+								<Text 
+									fieldName="slug"
+									placeholder="Unique Content Item Identifier" />
 							</Label>
 							<!-- xSlug -->
 							
 							<!-- Language -->
 							{#if (isNew)}
 								<Text
+									fieldName="language"
 									type="Single-select menu"
 									required="{true}"
 									label="Language"
@@ -268,7 +275,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Text placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Text
+													fieldName="{field}" 
+													placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xText Field -->
@@ -278,7 +287,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<LargeText placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<LargeText 
+													fieldName="{field}" 
+													placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xLargeText Field -->
@@ -288,7 +299,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Media description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Media 
+													fieldName="{field}" 
+													description="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xReference Media Type -->
@@ -298,7 +311,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Reference description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Reference 
+													fieldName="{field}" 
+													description="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xReference Content Type -->
@@ -308,7 +323,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Date description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Date 
+													fieldName="{field}" 
+													description="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xDatetime -->
@@ -318,7 +335,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Number description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Number 
+													fieldName="{field}" 
+													description="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xNumber -->
@@ -328,7 +347,9 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Decimal description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Decimal 
+													fieldName="{field}" 
+													description="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- xDecimal -->
@@ -339,6 +360,7 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Boolean 
+													fieldName="{field}" 
 													defaultValue="{contentTypeStructure.fields[field].defaultValue}"
 													labels="{contentTypeStructure.fields[field].settings.caas.editor.options.labels}"
 													description="{contentTypeStructure.fields[field].settings.caas.description}" />
@@ -351,11 +373,12 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<EmbeddedContent  />
+												<EmbeddedContent 
+													fieldName="{field}" 
+													/>
 											</Label>
 										{/if}
 										<!-- xEmbeddedContent -->
-
 									{/each}
 								</div>
 							</div>
