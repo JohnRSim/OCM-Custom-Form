@@ -209,8 +209,7 @@
 			{#if (contentTypeStructure.groups)}
 				<!-- Primary Fields-->
 				<Group>
-					<dt slot="title"></dt>
-					<dd slot="content" class="mt-8">
+					<div slot="content">
 						<div class="grid grid-cols-1 gap-6">
 							<!-- Asset Name -->
 							<Label
@@ -246,7 +245,7 @@
 							{/if}
 							<!-- xLanguage -->
 						</div>
-					</dd>
+					</div>
 				</Group>
 				<!-- xPrimary Fields-->
 
@@ -258,9 +257,10 @@
 				{#each contentTypeStructure.groups as group}
 					<!-- Loop fields associated with group -->
 					{#if ((group.fields) && (group.fields.length > 0))}
-						<Group isCard={true}>
-							<dt slot="title" class="p-4 font-semibold border-b border-grey">{group.title}</dt>
-							<dd slot="content" class="p-4">
+						<Group 
+							title="{group.title}"
+							isCard={true}>
+							<div slot="content">
 								<div class="grid grid-cols-1 gap-6">
 									{#each group.fields as field}
 										<!-- Text Field -->
@@ -338,7 +338,10 @@
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
-												<Boolean description="{contentTypeStructure.fields[field].settings.caas.description}" />
+												<Boolean 
+													defaultValue="{contentTypeStructure.fields[field].defaultValue}"
+													labels="{contentTypeStructure.fields[field].settings.caas.editor.options.labels}"
+													description="{contentTypeStructure.fields[field].settings.caas.description}" />
 											</Label>
 										{/if}
 										<!-- Boolean -->
@@ -355,7 +358,7 @@
 
 									{/each}
 								</div>
-							</dd>
+							</div>
 						</Group>
 					{/if}
 					<!-- xLoop fields associated with group -->
