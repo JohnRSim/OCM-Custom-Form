@@ -1,26 +1,63 @@
 <script>
+	//svelte
+	import { createEventDispatcher, onMount } from 'svelte';
+
 	export let fieldName = 'unknown';
 	export let placeholder = 'Enter number';
+	export let defaultValue;
+	export let activeValue;
+
+	const dispatch = createEventDispatcher();
 	
-	let decimalValue;
+	//if no active value use default value if defined.
+	activeValue = activeValue || defaultValue || '';
 	
+	/**
+	 * Component Mounted
+	*/
+	onMount(() => {
+		//check value on init
+		checkVal();
+	});
+
 	/**
 	 * checkVal
 	 * check if decimal if not add 2dp
 	 */
 	function checkVal() {
-		if (decimalValue) {
-			if (Number.isSafeInteger(decimalValue)) {
-				decimalValue = decimalValue.toFixed(2);
+		if (activeValue) {
+			if (Number.isSafeInteger(activeValue)) {
+				activeValue = activeValue.toFixed(2);
 			}
 		}
+		sendUpdate();
+	}
+
+	/**
+	 * dispatchEvent
+	 * Dispatch event passing option data
+	 **/
+	function dispatchEvent(options) {
+		console.log(`[Dispatch Event][${options.action}]`,options);
+		dispatch(options.action, options);
+	}
+
+	/**
+	 * sendUpdate
+	 **/
+	function sendUpdate() {
+		dispatchEvent({
+			action: 'updateField',
+			name: fieldName,
+			value: activeValue,
+		});
 	}
 </script>
 
 
 <input
 	on:blur="{checkVal}"
-	bind:value="{decimalValue}"
+	bind:value="{activeValue}"
 	type="number"
 	step="any"
 	class="

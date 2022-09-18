@@ -1,13 +1,44 @@
 <script>
+	//svelte
+	import { createEventDispatcher } from 'svelte';
+	
 	export let fieldName = 'unknown';
 	export let type=""
 	export let placeholder = 'Enter Text';
+	export let defaultValue;
+	export let activeValue;
+	
+	const dispatch = createEventDispatcher();
 
-	placeholder = ((placeholder) && (placeholder.length > 0))?placeholder:'Enter Text';
+	//if no active value use default value if defined.
+	activeValue = activeValue || defaultValue || '';
+
+	/**
+	 * dispatchEvent
+	 * Dispatch event passing option data
+	 **/
+	function dispatchEvent(options) {
+		console.log(`[Dispatch Event][${options.action}]`,options);
+		dispatch(options.action, options);
+	}
+
+	/**
+	 * sendUpdate
+	 **/
+	function sendUpdate() {
+		dispatchEvent({
+			action: 'updateField',
+			name: fieldName,
+			value: activeValue,
+		});
+	}
+
 </script>
 
 
 <textarea
+	on:blur="{sendUpdate}"
+	bind:value="{activeValue}"
 	class="
 		mt-1
 		block
@@ -19,7 +50,7 @@
 	"
 	rows="3"
 	placeholder="{placeholder}"
-/>
+></textarea>
 
 <style lang="scss">
 	

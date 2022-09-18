@@ -1,4 +1,7 @@
 <script>
+	//svelte
+	import { createEventDispatcher } from 'svelte';
+	
 	export let pattern = false;
 	export let fieldName = 'unknown';
 	export let type = 'Single text box';
@@ -6,13 +9,40 @@
 	export let items = [];
 	export let focus=false;
 	export let defaultValue;
+	export let activeValue;
+	
+	const dispatch = createEventDispatcher();
 
-	placeholder = ((placeholder) && (placeholder.length > 0))?placeholder:'Enter Text';
+	//if no active value use default value if defined.
+	activeValue = activeValue || defaultValue || '';
+	
+	/**
+	 * dispatchEvent
+	 * Dispatch event passing option data
+	 **/
+	function dispatchEvent(options) {
+		console.log(`[Dispatch Event][${options.action}]`,options);
+		dispatch(options.action, options);
+	}
+
+	/**
+	 * sendUpdate
+	 **/
+	function sendUpdate() {
+		dispatchEvent({
+			action: 'updateField',
+			name: fieldName,
+			value: activeValue,
+		});
+	}
+
 </script>
 
 
 {#if (type==="Single text box")}
 	<input
+		on:blur="{sendUpdate}"
+		bind:value="{activeValue}"
 		autofocus="{focus}"
 		type="text"
 		class="
@@ -30,7 +60,8 @@
 
 {#if (type==="Single-select menu")}
 	<select
-		bind:value={defaultValue}
+		on:change="{sendUpdate}"
+		bind:value={activeValue}
 		class="
 			block
 			w-full

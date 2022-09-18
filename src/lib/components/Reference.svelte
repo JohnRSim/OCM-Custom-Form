@@ -1,6 +1,7 @@
 <script>
 	export let fieldName = 'unknown';
 	export let description = '';
+	export let activeValue;
 </script>
 
 

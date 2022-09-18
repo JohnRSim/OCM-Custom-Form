@@ -34,6 +34,9 @@
 	let availableLanguages;
 	let slug;
 	let enableDescription = true;
+
+	//store data
+	let itemData = {};
 	
 	//Content type Asset Configuration
 	let contentTypeStructure = {};
@@ -87,6 +90,9 @@
 		fields = item.getFields();
 		console.log('[fields]', fields);
 
+		// Set store FieldValues
+		setItemData();
+
 		// Generate loopable structure
 		updateContentTypeStore(itemProps, groups, fields);
 
@@ -123,7 +129,9 @@
 			console.log('[availableLanguages]', availableLanguages);
 		//updating asset
 		} else {
-
+			itemData['assetName'] = itemProps.name;
+			itemData['description'] = itemProps.description;
+			itemData['slug'] = itemProps.slug;
 		}
 		
 		//setup callback to validate form if users selects OCE Save option
@@ -137,6 +145,22 @@
 		
 		//page ready
 		isMounted = true;
+	}
+
+	
+	/**
+	 * setItemData
+	 **/
+	 function setItemData() {
+		console.log('[setItemData]');
+		fields.forEach((field) => {
+			if (field.getDefinition().datatype === 'json') {
+				itemData[field.getDefinition().name] = JSON.stringify(field.getValue());
+			} else {
+				itemData[field.getDefinition().name] = field.getValue();
+			}
+		});
+		console.log('[ItemData]',itemData);
 	}
 
 	/**
@@ -203,6 +227,93 @@
 
 	} 
 
+	/**
+	 * updateField
+	 **/
+	 function updateField(props) { 
+		console.log('[updateField]',props);
+
+		let value = props.value;
+
+		if (props.multi) {
+			let updateList = [];
+			if (props.add) {
+				//check if value set as array
+				if (!Array.isArray(itemData[props.name])) {
+					itemData[props.name] = [];
+				}
+
+				//loop through check if id defined and update else add item
+				let updated = false;
+				itemData[props.name].forEach((item,i) => {
+					if (item.id === value.id) {
+						itemData[props.name][i] = value;
+						updated = true;
+					}
+				});
+
+				if (!updated) {
+					updateList = itemData[props.name];
+					updateList.push(value);
+					itemData[props.name] = [];
+					itemData[props.name] = updateList;
+				}
+			} else {
+				//create new array remove by id and update..
+				//todo swap to reduce..?
+				itemData[props.name].forEach((item) => {
+					if (item.id !== value.id) {
+						updateList.push(item);
+					}
+				});
+
+				itemData[props.name] = updateList;
+			}
+		} else {
+			itemData[props.name] = value;
+		}
+
+		//set Field Value
+		setFieldValue(props.name, itemData[props.name]);
+	}
+
+	
+	/**
+	 * Set field value
+	 **/
+	 function setFieldValue(name, value) {
+		console.log('[setFieldValue]',name,value);
+
+		//Doesn't work with CEC Develop add fix
+		if (window.location.hostname !== 'localhost') {
+			console.log('[setFieldValue]', name, value);
+			
+			//update assetLang
+			if (name === 'assetLanguage') {
+				item.setLanguage(value, { silent: true });
+			//update assetName
+			} else if (name === 'assetName') {
+				const activeTitle = value.replace(/[&\/\\#,+()$~%'":;*?<>{}]/g,'');
+				item.setName(activeTitle.substring(0,256));
+			//update description
+			} else if (name === 'description') {
+				const activeTitle = value.replace(/[&\/\\#,+()$~%'":;*?<>{}]/g,'');
+				item.setDescription(activeTitle.substring(0,128));
+			//update slug
+			} else if (name === 'slug') {
+				const activeTitle = value.replace(/[&\/\\#,+()@$~%.='":;*?<>{}\s]/g,'');
+				item.setSlug(activeTitle.substring(0,250));
+			//update field
+			} else {
+				console.log(item.getFieldByName(name));
+				const getField = item.getFieldByName(name);
+				const def = getField.getDefinition();
+
+				getField.setValue(value);
+			}
+		}
+		console.log(itemData)
+	}
 </script>
 
 {#if (isMounted)}
@@ -226,9 +337,11 @@
 								required="{true}"
 								label="Asset Name">
 								<Text 
+									on:updateField="{(e) => { updateField(e.detail); }}"
 									focus="{true}"
-									fieldName="name"
-									placeholder="Content item name" />
+									fieldName="assetName"
+									placeholder="Content item name"
+									activeValue="{itemData['assetName']}" />
 							</Label>
 							<!-- xAsset Name -->
 
@@ -238,8 +351,10 @@
 									required="{false}"
 									label="Description">
 									<LargeText 
+										on:updateField="{(e) => { updateField(e.detail); }}"
 										fieldName="description"
-										placeholder="Content item description" />
+										placeholder="Content item description"
+										activeValue="{itemData['description']}" />
 								</Label>
 							{/if}
 							<!-- xDescription -->
@@ -250,9 +365,11 @@
 									required="{true}"
 									label="Slug">
 									<Text 
+										on:updateField="{(e) => { updateField(e.detail); }}"
 										patttern="{slug.pattern}"
 										fieldName="slug"
-										placeholder="Unique Content Item Identifier" />
+										placeholder="Unique Content Item Identifier"
+										activeValue="{itemData['slug']}" />
 								</Label>
 							{/if}
 							<!-- xSlug -->
@@ -263,7 +380,8 @@
 									required="{true}"
 									label="Language">
 									<Text
-										fieldName="language"
+										on:updateField="{(e) => { updateField(e.detail); }}"
+										fieldName="assetLanguage"
 										type="Single-select menu"
 										required="{true}"
 										label="Language"
@@ -298,8 +416,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Text
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+													placeholder="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}" />
 											</Label>
 										{/if}
 										<!-- xText Field -->
@@ -310,8 +430,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<LargeText 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													placeholder="{contentTypeStructure.fields[field].settings.caas.description}" />
+													placeholder="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xLargeText Field -->
@@ -322,8 +444,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Media 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													description="{contentTypeStructure.fields[field].settings.caas.description}" />
+													description="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xReference Media Type -->
@@ -334,8 +458,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Reference 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													description="{contentTypeStructure.fields[field].settings.caas.description}" />
+													description="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xReference Content Type -->
@@ -346,8 +472,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Date 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													description="{contentTypeStructure.fields[field].settings.caas.description}" />
+													description="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xDatetime -->
@@ -358,8 +486,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Number 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													description="{contentTypeStructure.fields[field].settings.caas.description}" />
+													description="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xNumber -->
@@ -370,8 +500,10 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Decimal 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
-													description="{contentTypeStructure.fields[field].settings.caas.description}" />
+													description="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xDecimal -->
@@ -382,10 +514,12 @@
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<Boolean 
+													on:updateField="{(e) => { updateField(e.detail); }}"
 													fieldName="{field}" 
 													defaultValue="{contentTypeStructure.fields[field].defaultValue}"
 													labels="{contentTypeStructure.fields[field].settings.caas.editor.options.labels}"
-													description="{contentTypeStructure.fields[field].settings.caas.description}" />
+													description="{contentTypeStructure.fields[field].settings.caas.description}"
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- Boolean -->
@@ -393,11 +527,12 @@
 										<!-- EmbeddedContent -->
 										{#if (contentTypeStructure.fields[field].datatype === 'json')}
 											<Label
+												on:updateField="{(e) => { updateField(e.detail); }}"
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
 												<EmbeddedContent 
 													fieldName="{field}" 
-													/>
+													activeValue="{itemData[field]}"  />
 											</Label>
 										{/if}
 										<!-- xEmbeddedContent -->

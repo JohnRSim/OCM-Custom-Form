@@ -1,24 +1,61 @@
 <script>
+	//svelte
+	import { createEventDispatcher, onMount } from 'svelte';
+
 	export let fieldName = 'unknown';
 	export let placeholder = 'Enter number';
+	export let defaultValue;
+	export let activeValue;
 
-	let numberValue;
+	const dispatch = createEventDispatcher();
+
+	//if no active value use default value if defined.
+	activeValue = activeValue || defaultValue || '';
 	
+	/**
+	 * Component Mounted
+	*/
+	onMount(() => {
+		//check value on init
+		checkVal();
+	});
+
 	/**
 	 * checkVal
 	 * Converting a Number in Scientific Notation to a String
 	 */
 	function checkVal() {
-		if (numberValue) {
-			numberValue = (numberValue).toLocaleString('fullwide', {useGrouping:false})
+		if (activeValue) {
+			activeValue = (activeValue).toLocaleString('fullwide', {useGrouping:false})
 		}
+		sendUpdate();
+	}
+
+	/**
+	 * dispatchEvent
+	 * Dispatch event passing option data
+	 **/
+	 function dispatchEvent(options) {
+		console.log(`[Dispatch Event][${options.action}]`,options);
+		dispatch(options.action, options);
+	}
+
+	/**
+	 * sendUpdate
+	 **/
+	function sendUpdate() {
+		dispatchEvent({
+			action: 'updateField',
+			name: fieldName,
+			value: activeValue,
+		});
 	}
 </script>
 
 
 <input
 	on:blur="{checkVal}"
-	bind:value="{numberValue}"
+	bind:value="{activeValue}"
 	type="number"
 	class="
 		mt-1
