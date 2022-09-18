@@ -32,6 +32,8 @@
 	let defaultLang;
 	let isNew = true;
 	let availableLanguages;
+	let slug;
+	let enableDescription = true;
 	
 	//Content type Asset Configuration
 	let contentTypeStructure = {};
@@ -66,6 +68,10 @@
 		groups = type.getGroups();
 		console.log('[groups]', groups);
 
+		//get slug
+		slug = type.getSlug();
+		console.log('[slug]', slug);
+
 		// item being rendered in the form
 		item = formSDK.getItem();
 		console.log('[item]', item);
@@ -91,6 +97,9 @@
 		// repository's  default language
 		defaultLang = formSDK.getRepositoryDefaultLanguage();
 		console.log('[Repo Default Lang]', defaultLang);
+
+		//check if description can be set
+		//enableDescription = item.setDescription();
 
 		//is a new asset being created
 		isNew = item.isNew();
@@ -196,6 +205,7 @@
 
 </script>
 
+{#if (isMounted)}
 <section class="columns-1 gap-8 flex flex-1">
 	<!-- Info Panel 
 	<article class="columns-1 p-4 bg-slate-900 rounded-lg  flex-1">1</article>
@@ -223,33 +233,43 @@
 							<!-- xAsset Name -->
 
 							<!-- Description -->
-							<Label
-								required="{false}"
-								label="Description">
-								<LargeText 
-									fieldName="description"
-									placeholder="Content item name" />
-							</Label>
+							{#if (enableDescription)}
+								<Label
+									required="{false}"
+									label="Description">
+									<LargeText 
+										fieldName="description"
+										placeholder="Content item name" />
+								</Label>
+							{/if}
 							<!-- xDescription -->
 
 							<!-- Slug -->
-							<Label
-								required="{true}"
-								label="Slug">
-								<Text 
-									fieldName="slug"
-									placeholder="Unique Content Item Identifier" />
-							</Label>
+							{#if ((slug) && (slug.enabled))}
+								<Label
+									required="{true}"
+									label="Slug">
+									<Text 
+										patttern="{slug.pattern}"
+										fieldName="slug"
+										placeholder="Unique Content Item Identifier" />
+								</Label>
+							{/if}
 							<!-- xSlug -->
 							
 							<!-- Language -->
 							{#if (isNew)}
-								<Text
-									fieldName="language"
-									type="Single-select menu"
+								<Label
 									required="{true}"
-									label="Language"
-									items="{availableLanguages}" />
+									label="Language">
+									<Text
+										fieldName="language"
+										type="Single-select menu"
+										required="{true}"
+										label="Language"
+										items="{availableLanguages}"
+										defaultValue="{defaultLang}" />
+								</Label>
 							{/if}
 							<!-- xLanguage -->
 						</div>
@@ -264,8 +284,9 @@
 				<!-- Loop through Groups and asset configured fields -->
 				{#each contentTypeStructure.groups as group}
 					<!-- Loop fields associated with group -->
-					{#if ((group.fields) && (group.fields.length > 0))}
+					{#if ((group.fields) && (group.fields.length > 0) && (!group.hidden))}
 						<Group 
+							collapse="{group.collapse}"
 							title="{group.title}"
 							isCard={true}>
 							<div slot="content">
@@ -393,7 +414,7 @@
 	</article>
 	<!-- xForm Panel -->
 </section>
-
+{/if}
 
 <style>
 </style>
