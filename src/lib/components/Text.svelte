@@ -1,7 +1,12 @@
 <script>
+	import { loop_guard } from "svelte/internal";
+
+
 	export let type = 'Single text box';
-	export let placeholder = '';
+	export let placeholder = 'Enter Text';
 	export let items = [];
+	
+	placeholder = ((placeholder) && (placeholder.length > 0))?placeholder:'Enter Text';
 </script>
 
 

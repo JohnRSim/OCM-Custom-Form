@@ -1,5 +1,5 @@
 <script>
-	export let placeholder = '';
+	export let placeholder = 'Enter content';
 </script>
 
 

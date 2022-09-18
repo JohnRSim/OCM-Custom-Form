@@ -14,6 +14,8 @@
 	import Boolean from '$lib/components/Boolean.svelte';
 	import Date from '$lib/components/Date.svelte';
 	import Label from '$lib/components/Label.svelte';
+	import Number from '$lib/components/Number.svelte';
+	import Decimal from '$lib/components/Decimal.svelte';
 	
 	//Global Form Configuration
 	let isMounted = false;
@@ -302,7 +304,7 @@
 										<!-- xReference Content Type -->
 
 										<!-- Datetime -->
-											{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
+										{#if (contentTypeStructure.fields[field].datatype === 'datetime')}
 											<Label
 												required="{contentTypeStructure.fields[field].required}"
 												label="{contentTypeStructure.fields[field].description}">
@@ -312,9 +314,23 @@
 										<!-- xDatetime -->
 
 										<!-- Number -->
+										{#if (contentTypeStructure.fields[field].datatype === 'number')}
+											<Label
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}">
+												<Number description="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
+										{/if}
 										<!-- xNumber -->
 
 										<!-- Decimal -->
+										{#if (contentTypeStructure.fields[field].datatype === 'decimal')}
+											<Label
+												required="{contentTypeStructure.fields[field].required}"
+												label="{contentTypeStructure.fields[field].description}">
+												<Decimal description="{contentTypeStructure.fields[field].settings.caas.description}" />
+											</Label>
+										{/if}
 										<!-- xDecimal -->
 										
 										<!-- Boolean -->

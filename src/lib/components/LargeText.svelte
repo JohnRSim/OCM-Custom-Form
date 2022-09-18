@@ -1,6 +1,8 @@
 <script>
 	export let type=""
-	export let placeholder = '';
+	export let placeholder = 'Enter Text';
+	
+	placeholder = ((placeholder) && (placeholder.length > 0))?placeholder:'Enter Text';
 </script>
 
 
