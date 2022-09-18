@@ -545,7 +545,9 @@
 				{/each}
 				<!-- xLoop through Groups -->
 			{/if}
+			<div class="flex justify-center font-semibold text-sm"><a href="https://bitmapbytes.com/" target="_blank" rel="noopener">Developed by BitmapBytes</a></div>
 		</form>	
+		
 	</article>
 	<!-- xForm Panel -->
 </section>
