@@ -36,6 +36,10 @@
 </script>
 
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- LargeText -->
 <textarea
 	on:blur="{sendUpdate}"
 	bind:value="{activeValue}"
@@ -51,6 +55,7 @@
 	rows="3"
 	placeholder="{placeholder}"
 ></textarea>
+<!-- xLargeText -->
 
 <style lang="scss">
 	

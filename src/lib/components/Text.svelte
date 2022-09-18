@@ -39,6 +39,10 @@
 </script>
 
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- Single text box -->
 {#if (type==="Single text box")}
 	<input
 		on:blur="{sendUpdate}"
@@ -57,7 +61,9 @@
 		placeholder="{placeholder}"
 	/>
 {/if}
+<!-- xSingle text box -->
 
+<!-- Single-select menu -->
 {#if (type==="Single-select menu")}
 	<select
 		on:change="{sendUpdate}"
@@ -76,6 +82,7 @@
 		{/each}
 	</select>
 {/if}
+<!-- xSingle-select menu -->
 <style lang="scss">
 	
 </style>

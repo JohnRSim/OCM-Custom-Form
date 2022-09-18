@@ -39,6 +39,10 @@
 
 
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- Date -->
 <input
 	on:blur="{sendUpdate}"
 	bind:value={activeValue}
@@ -52,6 +56,7 @@
 		shadow-sm
 		focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
 	" />
+<!-- xDate -->
 
 <style lang="scss">
 	

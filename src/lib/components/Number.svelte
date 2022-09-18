@@ -53,6 +53,10 @@
 </script>
 
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- Number -->
 <input
 	on:blur="{checkVal}"
 	bind:value="{activeValue}"
@@ -68,6 +72,7 @@
 	"
 	placeholder="{placeholder}"
 />
+<!-- Number -->
 
 <style lang="scss">
 	

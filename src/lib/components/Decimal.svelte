@@ -8,7 +8,7 @@
 	export let activeValue;
 
 	const dispatch = createEventDispatcher();
-	
+
 	//if no active value use default value if defined.
 	activeValue = activeValue || defaultValue || '';
 	
@@ -55,6 +55,10 @@
 </script>
 
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- Decimal -->
 <input
 	on:blur="{checkVal}"
 	bind:value="{activeValue}"
@@ -71,6 +75,7 @@
 	"
 	placeholder="{placeholder}"
 />
+<!-- xDecimal -->
 
 <style lang="scss">
 	

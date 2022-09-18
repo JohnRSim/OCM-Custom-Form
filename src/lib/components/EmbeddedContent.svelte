@@ -35,6 +35,10 @@
 
 </script>
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- Embedded Content -->
 <textarea
 	on:blur="{sendUpdate}"
 	bind:value="{activeValue}"
@@ -50,6 +54,7 @@
 	rows="3"
 	placeholder="{placeholder}"
 />
+<!-- xEmbedded Content -->
 
 <style lang="scss">
 	

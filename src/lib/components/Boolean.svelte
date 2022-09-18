@@ -45,6 +45,10 @@
 </script>
 
 
+<!-- Anchor -->
+<span id="{fieldName}"></span>
+
+<!-- Boolean -->
 <div class="flex" on:click="{toggle}">
 	<span>{labels['off']}</span>
 	<div class="cursor-pointer ml-2 mr-2 pointer-events-auto h-6 w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out {(activeValue)?'bg-indigo-600 ring-black/20':'bg-slate-900/10 ring-slate-900/5'}">
@@ -53,6 +57,7 @@
 	<span>{labels['on']}</span>
 </div>
 <p class="text-sm text-slate-500">{description}</p>
+<!-- xBoolean -->
 
 <style lang="scss">
 	
