@@ -40,6 +40,7 @@
 	
 	//Content type Asset Configuration
 	let contentTypeStructure = {};
+	let invalidFields = [];
 
 
 	onMount(async () => {
@@ -216,7 +217,259 @@
 	 */
 	function validateForm() {
 		console.log('[validateForm]');
+		
+		//reset
+		invalidFields = [];
 
+		return new Promise((resolve, reject) => {
+			validateAllFields(item).then((result) => {
+				console.log('[validatedAllFields]',result);
+				resolve(result);
+			}, (error) => {
+				console.error(error);
+				resolve({
+					isValid: false,
+					message: 'Error Detected During validation - cannot submit form.'
+				});
+			});
+		});
+	}
+
+	/**
+	 * validateAllFields
+	 **/
+	function validateAllFields(activeItem) {
+		console.info('[validateAllFields]',activeItem);
+
+		return new Promise((resolve, reject) => {
+			const fields = activeItem.getFields();
+			const fieldLength = fields.length;
+
+			let isValid = true;
+			let message = '';
+
+			// first include the validation promises for item name and language
+			let validationPromises = [
+				validateItemName(activeItem), 
+				validateItemLanguage(activeItem),
+				validateItemDescription(activeItem),
+				validateItemSlug(activeItem),
+			];
+
+			// now add all field validation promises
+			for (let i = 0; i < fieldLength; i++) {
+				validationPromises.push(validateField(fields[i]));
+			}
+
+			Promise.all(validationPromises).then((data) => {
+				console.log('validation---',data);
+				
+				const invalidFieldNames = [];
+				const invalidFieldNameDesc = [];
+				const invalidData = data.filter((value) => {
+					if (!value.isValid) {
+						invalidFieldNames.push(value.fieldName);
+						invalidFieldNameDesc.push(value.description);
+					}
+					return !(value.isValid);
+				});
+
+				//update fields that error
+				invalidFields = invalidFields.concat(invalidFieldNames);
+				console.log('invalid fields:',invalidFields,invalidFieldNameDesc);
+
+				if (invalidData.length > 0) {
+					const firstErrField = document.getElementById(invalidFields[0]);
+					if (firstErrField) {
+						firstErrField.scrollIntoView({
+							behavior: 'smooth', 
+							block: 'start', 
+							inline: 'nearest'
+						});
+					} else {
+						console.error('unable to find field', invalidFields[0]);
+					}
+					resolve({
+						isValid: false,
+						message: `The following field values are invalid: ${invalidFieldNameDesc.join(' - ')}`
+					});
+				} else {
+					resolve({
+						isValid: isValid,
+						message: message
+					});
+				}
+			});
+		});
+	}
+
+	/**
+	 * validateItemName
+	 **/
+	function validateItemName(activeItem) {
+		console.info('[validateItemName]',activeItem);
+
+		return new Promise((resolve, reject) => {
+			const fieldName = activeItem.get().name;
+			
+			activeItem.validateName(fieldName).then((validation) => {
+				if (validation && validation.isValid) {
+					// set name for the item
+					//hideValidationError('#name-field');
+					console.info('[hide item validation error]', fieldName, validation);
+				} else {
+					// handle invalidation errors
+					//showValidationError(validation, '#name-input', '#name-field');
+					console.info('[show item validation error]', fieldName, validation);
+				}
+
+				//add identifier
+				//if (fieldName) {
+					validation.fieldName = 'assetName';
+					validation.description = 'Headline';
+				//}
+
+				resolve(validation);
+			}).catch((error) => {
+				// handle error
+				console.error('Error while invoking item.validateName:', fieldName, error);
+				reject(error);
+			});
+		});
+	}
+	
+	/**
+	 * validateItemLanguage
+	 **/
+	function validateItemLanguage(lang) {
+		console.info('[validateItemLanguage]',lang);
+
+		return new Promise((resolve, reject) => {
+			const language = lang.get().language;
+			
+			lang.validateLanguage(language).then((validation) => {
+				if (validation && validation.isValid) {
+					// set name for the item
+					//hideValidationError('.language-select-wrapper');
+					console.info('[hide lang validation error]', language, validation);
+				} else {
+					// handle invalidation errors
+					console.info('[show lang validation error]', language, validation);
+					//showValidationError(validation, '#language-select', '.language-select-wrapper');
+				}
+				//add identifier
+				validation.fieldName = 'assetLanguage';
+				validation.description = 'Asset Language';
+
+				resolve(validation);
+			}).catch((error) => {
+				// handle error
+				console.error('Error while invoking item.validateLanguage:', language, error);
+				reject(error);
+			});
+		});
+	}
+	
+	/**
+	 * validateItemDescription
+	 **/
+		function validateItemDescription(desc) {
+		console.info('[validateItemDescription]',desc);
+
+		return new Promise((resolve, reject) => {
+			const decription = desc.get().description;
+			
+			desc.validateDescription(decription).then((validation) => {
+				if (validation && validation.isValid) {
+					// set name for the item
+					//hideValidationError('.language-select-wrapper');
+					console.info('[hide decription validation error]', decription, validation);
+				} else {
+					// handle invalidation errors
+					console.info('[show decription validation error]', decription, validation);
+					//showValidationError(validation, '#language-select', '.language-select-wrapper');
+				}
+				//add identifier
+				validation.fieldName = 'description';
+				validation.description = 'Description';
+
+				resolve(validation);
+			}).catch((error) => {
+				// handle error
+				console.error('Error while invoking item.validateDescription:', decription, error);
+				reject(error);
+			});
+		});
+	}
+
+	/**
+	 * validateItemSlug
+	 **/
+	function validateItemSlug(slug) {
+		console.info('[validateItemSlug]',slug);
+		
+		return new Promise((resolve, reject) => {
+			const theSlug = slug.get().slug;
+			
+			slug.validateSlug(theSlug).then((validation) => {
+				if (validation && validation.isValid) {
+					// set name for the item
+					//hideValidationError('.language-select-wrapper');
+					console.info('[hide slug validation error]', theSlug, validation);
+				} else {
+					// handle invalidation errors
+					console.info('[show slug validation error]', theSlug, validation);
+					//showValidationError(validation, '#language-select', '.language-select-wrapper');
+				}
+				//add identifier
+				validation.fieldName = 'slug';
+				validation.description = 'Slug';
+
+				resolve(validation);
+			}).catch((error) => {
+				// handle error
+				console.error('Error while invoking item.validateLanguage:', theSlug, error);
+				reject(error);
+			});
+		});
+	}
+
+	/**
+	 * validateField
+	 **/
+	function validateField(field) {
+		console.info('[validateField]',field);
+
+		return new Promise((resolve, reject) => {
+			const itemDef = field.getDefinition();
+			const fieldName = itemDef.name;
+			const description = itemDef.description;
+			const fieldVal = field.getValue();
+			
+			field.validate(fieldVal).then((validation) => {
+				if (validation && validation.isValid) {
+					console.info('[hide field validation error]', fieldName, validation);
+				} else {
+					// handle invalidation errors
+					console.info('[show field validation error]', fieldName, validation);
+					
+				}
+				
+				if (fieldName) {
+					validation.fieldName = fieldName;
+					validation.description = description;
+				} else {
+					validation.fieldName = 'unknownField'
+					validation.description = 'Unknown Field'
+				}
+
+				resolve(validation);
+			}).catch(function (error) {
+				// handle error
+				console.error('Error while invoking field.validate:', fieldName, error);
+				reject(error);
+			});
+		});
 	}
 
 	/**
