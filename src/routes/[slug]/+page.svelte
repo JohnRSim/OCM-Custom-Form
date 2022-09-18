@@ -239,7 +239,7 @@
 									label="Description">
 									<LargeText 
 										fieldName="description"
-										placeholder="Content item name" />
+										placeholder="Content item description" />
 								</Label>
 							{/if}
 							<!-- xDescription -->
