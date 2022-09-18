@@ -36,7 +36,7 @@
 
 		</dt>
 	{/if}
-	<dd class:p-4="{isCard}" class:mt-8="{!isCard}">
+	<dd class:p-4="{isCard}" class:mt-8="{!isCard}" class:p-1="{!isCard}">
 		<slot name="content"></slot>
 	</dd>
 </dl>

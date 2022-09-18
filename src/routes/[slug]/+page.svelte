@@ -216,6 +216,7 @@
 								required="{true}"
 								label="Asset Name">
 								<Text 
+									focus="{true}"
 									fieldName="name"
 									placeholder="Content item name" />
 							</Label>

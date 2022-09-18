@@ -3,6 +3,7 @@
 	export let type = 'Single text box';
 	export let placeholder = 'Enter Text';
 	export let items = [];
+	export let focus=false;
 	
 	placeholder = ((placeholder) && (placeholder.length > 0))?placeholder:'Enter Text';
 </script>
@@ -10,6 +11,7 @@
 
 {#if (type==="Single text box")}
 	<input
+		autofocus="{focus}"
 		type="text"
 		class="
 			mt-1
