@@ -9,7 +9,7 @@
 <div class="flex ring-1 ring-slate-700/10 rounded-md p-2 mt-2">
 	<div class="flex-1 flex items-center ">
 		<span class="ring-1 ring-slate-700/10 rounded-md p-1 text-xs">NFT-3D</span> 
-		<span class="pl-3"><input value="Player Card 1" /></span>
+		<span class="pl-3"><input value="Player Card 1" readonly/></span>
 	</div>
 	<div class="pr-2 flex items-center">
 		<button class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500">Create</button>
